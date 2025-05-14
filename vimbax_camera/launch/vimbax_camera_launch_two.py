@@ -29,27 +29,12 @@
 
 from launch import LaunchDescription
 from launch_ros.actions import Node
-from launch.actions import SetEnvironmentVariable, DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration
-import os
+from launch.actions import SetEnvironmentVariable
 
 
 def generate_launch_description():
-    # Get directory where this launch file is located
-    this_dir = os.path.dirname(os.path.realpath(__file__))
-    default_settings_path = os.path.join(this_dir, 'settings', 'test_settings.xml')
-
-    settings_file_arg = DeclareLaunchArgument(
-        'settings_file_path',
-        default_value='./settings/test_settings.xml',
-        description='Path to the camera settings XML file'
-    )
-
-    settings_file_path = LaunchConfiguration('settings_file_path')
-
     return LaunchDescription([
         SetEnvironmentVariable('RCUTILS_COLORIZED_OUTPUT', '1'),
-        settings_file_arg,
 
         Node(
             package='vimbax_camera',
@@ -59,22 +44,21 @@ def generate_launch_description():
             parameters=[{
                 # "camera_id": "00:0f:31:00:0e:2f"
                 # "camera_id": "00:0F-31-00-0E-2F"
-                "camera_id": "192.168.68.60",
+                "camera_id": "192.168.68.60"
                 # "camera_id": "DEV_000F31000E2F"
-                "settings_file": settings_file_path,
             }]
         ),
 
-        # Node(
-        #     package='vimbax_camera',
-        #     namespace='camera_fl',
-        #     executable='vimbax_camera_node',
-        #     name='front_left',
-        #     parameters=[{
-        #         # "camera_id": "00:0f:31:00:0e:2f"
-        #         # "camera_id": "00:0F-31-00-0E-2F"
-        #         "camera_id": "192.168.68.61"
-        #         # "camera_id": "DEV_000F31000E2F"
-        #     }]
-        # )
+        Node(
+            package='vimbax_camera',
+            namespace='camera_fl',
+            executable='vimbax_camera_node',
+            name='front_left',
+            parameters=[{
+                # "camera_id": "00:0f:31:00:0e:2f"
+                # "camera_id": "00:0F-31-00-0E-2F"
+                "camera_id": "192.168.68.61"
+                # "camera_id": "DEV_000F31000E2F"
+            }]
+        )
     ])

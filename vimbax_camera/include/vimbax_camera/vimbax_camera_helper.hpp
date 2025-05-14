@@ -76,7 +76,7 @@ struct SFNCFeatures
   static constexpr std::string_view TriggerSelector = "TriggerSelector";
   static constexpr std::string_view DeviceFirmwareVersion = "DeviceFirmwareVersion";
   static constexpr std::string_view DeviceUserId = "DeviceUserID";
-  static constexpr std::string_view AcquisitionFrameRate = "AcquisitionFrameRate";
+  static constexpr std::string_view AcquisitionFrameRate = "AcquisitionFrameRateLimit";
   static constexpr std::string_view DeviceTimestampFrequency = "DeviceTimestampFrequency";
   static constexpr std::string_view GVSPAdjustPacketSize = "GVSPAdjustPacketSize";
 
