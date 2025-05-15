@@ -1,0 +1,24 @@
+services:
+  vimbax_ros2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: vimbax_ros2
+    container_name: vimbax_ros2
+    restart: always
+    volumes:
+      - ./ros2_ws:/ros2_ws
+      - /tmp/.X11-unix:/tmp/.X11-unix # X11 socket for GUI applications
+      - /etc/machine-id:/etc/machine-id # Machine ID for X11
+      - ${HOME}/yride_env_setup:/yride_env_setup:ro # Yride environment setup
+      - ${HOME}/vimbax_ros2_driver/:/root/ros2_ws/src/vimbax_ros2_driver
+    environment:
+      DISPLAY: "${DISPLAY}" # Needed to display RViz within the container
+      QT_QPA_PLATFORM: xcb
+      ROS_DOMAIN_ID: 1
+      CONTAINER_NAME: cameras
+      RCUTILS_COLORIZED_OUTPUT: 1 # Allows launch files to print colored text
+    tty: true
+    stdin_open: true
+    network_mode: host
+    privileged: true

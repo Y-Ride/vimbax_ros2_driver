@@ -1,0 +1,60 @@
+# This dockerfile needs to run ros2 humble
+ARG ROS_DISTRO=humble
+
+FROM ros:${ROS_DISTRO}
+
+
+# Install needed packages
+RUN apt update && apt install -y \
+git \
+nano \
+udev \
+libxcb-shape0
+
+# Extract VimbaX SDK
+WORKDIR /opt
+COPY VimbaX_Setup-2025-1-Linux64.tar.gz VimbaX_Setup-2025-1-Linux64.tar.gz
+RUN tar -xvzf VimbaX_Setup-2025-1-Linux64.tar.gz && \
+    rm VimbaX_Setup-2025-1-Linux64.tar.gz
+
+ENV VMB_DIR="/opt/VimbaX_2025-1"
+RUN cd ${VMB_DIR}/cti && \
+    ./Install_GenTL_Path.sh && \
+    echo 'source /etc/profile.d/VimbaX_GenTL_Path_64bit.sh' >> /root/.bashrc
+
+# Install dependencies
+COPY ros-${ROS_DISTRO}-vimbax-camera-driver-1.0.0-amd64.deb ros-${ROS_DISTRO}-vimbax-camera-driver-1.0.0-amd64.deb
+RUN apt install -y \
+    ros-${ROS_DISTRO}-rmw-cyclonedds-cpp \
+    # ros-${ROS_DISTRO}-launch-pytests \
+    ./ros-humble-vimbax-camera-driver-1.0.0-amd64.deb
+
+RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /root/.bashrc && \
+    echo "export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp" >> /root/.bashrc
+
+# Set up the ros2 workspace
+WORKDIR /root/ros2_ws/src
+RUN git clone https://github.com/Y-Ride/vimbax_ros2_driver.git
+
+WORKDIR /root/ros2_ws
+RUN rosdep install --from-path src --ignore-src && \
+    . /opt/ros/${ROS_DISTRO}/setup.sh && \
+    colcon build --symlink-install --cmake-args -DVMB_DIR=${VMB_DIR}
+
+RUN echo "source /root/ros2_ws/install/setup.bash" >> /root/.bashrc
+
+# Include the custom environment setup script
+RUN echo "if [ -f /yride_env_setup/custom_env.sh ]; then" >> ~/.bashrc && \
+    echo "  source /yride_env_setup/custom_env.sh" >> ~/.bashrc && \
+    echo "fi" >> ~/.bashrc
+
+RUN apt install -y \
+    libx11-xcb1 libxcb1 libxcb-util1 \
+    libxcb-icccm4 libxcb-image0 libxcb-keysyms1 \
+    libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 \
+    libxkbcommon-x11-0 libglu1-mesa \
+    ros-${ROS_DISTRO}-rviz2
+
+
+
+
