@@ -12,10 +12,9 @@ udev \
 libxcb-shape0
 
 # Extract VimbaX SDK
-WORKDIR /opt
-COPY VimbaX_Setup-2025-1-Linux64.tar.gz VimbaX_Setup-2025-1-Linux64.tar.gz
-RUN tar -xvzf VimbaX_Setup-2025-1-Linux64.tar.gz && \
-    rm VimbaX_Setup-2025-1-Linux64.tar.gz
+WORKDIR /tmp
+COPY setup/ .
+RUN ./install_vimbax.sh
 
 ENV VMB_DIR="/opt/VimbaX_2025-1"
 RUN cd ${VMB_DIR}/cti && \
@@ -23,11 +22,11 @@ RUN cd ${VMB_DIR}/cti && \
     echo 'source /etc/profile.d/VimbaX_GenTL_Path_64bit.sh' >> /root/.bashrc
 
 # Install dependencies
-COPY ros-${ROS_DISTRO}-vimbax-camera-driver-1.0.0-amd64.deb ros-${ROS_DISTRO}-vimbax-camera-driver-1.0.0-amd64.deb
+# COPY ros-${ROS_DISTRO}-vimbax-camera-driver-1.0.0-amd64.deb ros-${ROS_DISTRO}-vimbax-camera-driver-1.0.0-amd64.deb
 RUN apt install -y \
-    ros-${ROS_DISTRO}-rmw-cyclonedds-cpp \
+    ros-${ROS_DISTRO}-rmw-cyclonedds-cpp && \
     # ros-${ROS_DISTRO}-launch-pytests \
-    ./ros-humble-vimbax-camera-driver-1.0.0-amd64.deb
+    ./setup_ros2_driver.sh
 
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /root/.bashrc && \
     echo "export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp" >> /root/.bashrc

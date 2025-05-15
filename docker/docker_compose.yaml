@@ -1,10 +1,10 @@
 services:
-  vimbax_ros2:
+  cameras:
     build:
       context: .
       dockerfile: Dockerfile
-    image: vimbax_ros2
-    container_name: vimbax_ros2
+    image: cameras
+    container_name: cameras
     restart: always
     volumes:
       - ./ros2_ws:/ros2_ws
