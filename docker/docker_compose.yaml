@@ -11,7 +11,7 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix # X11 socket for GUI applications
       - /etc/machine-id:/etc/machine-id # Machine ID for X11
       - ${HOME}/yride_env_setup:/yride_env_setup:ro # Yride environment setup
-      - ${HOME}/vimbax_ros2_driver/:/root/ros2_ws/src/vimbax_ros2_driver
+      - ../:/root/ros2_ws/src/vimbax_ros2_driver
     environment:
       DISPLAY: "${DISPLAY}" # Needed to display RViz within the container
       QT_QPA_PLATFORM: xcb

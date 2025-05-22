@@ -168,7 +168,7 @@
             </SelectorGroup>
             <Feature Name="GainSelector" Value="All" Type="Enum" />
             <Feature Name="Gamma" Value="1" Type="Float" />
-            <Feature Name="GevSCPSPacketSize" Value="1500" Type="Int" />
+            <Feature Name="GevSCPSPacketSize" Value="8228" Type="Int" /> <!-- Default for most computers is 1500. Jumbo (and default for cameras) is 8228. -->
             <Feature Name="GevTimestampTickFrequency" Value="1000000000" Type="Int" />
             <Feature Name="GevTimestampValue" Value="0" Type="Int" />
             <Feature Name="Height" Value="1028" Type="Int" />
@@ -196,8 +196,9 @@
             <Feature Name="OffsetX" Value="0" Type="Int" />
             <Feature Name="OffsetY" Value="0" Type="Int" />
             <Feature Name="PayloadSize" Value="1266496" Type="Int" />
-            <!-- <Feature Name="PixelFormat" Value="BayerRG8" Type="Enum" /> -->
-            <Feature Name="PixelFormat" Value="RGB8Packed" Type="Enum" /> 
+            <!-- <Feature Name="PixelFormat" Value="Mono8" Type="Enum" /> -->
+            <Feature Name="PixelFormat" Value="BayerRG8" Type="Enum" />
+            <!-- <Feature Name="PixelFormat" Value="RGB8Packed" Type="Enum" />  -->
             <Feature Name="PtpAcquisitionGateTime" Value="0" Type="Int" />
             <Feature Name="PtpMode" Value="Auto" Type="Enum" />
             <Feature Name="PtpStatus" Value="Master" Type="Enum" />
@@ -209,7 +210,7 @@
             <Feature Name="SensorHeight" Value="2056" Type="Int" />
             <Feature Name="SensorType" Value="Bayer" Type="Enum" />
             <Feature Name="SensorWidth" Value="2464" Type="Int" />
-            <Feature Name="StreamBytesPerSecond" Value="57500000" Type="Int" />
+            <Feature Name="StreamBytesPerSecond" Value="20000000" Type="Int" /> <!--115000000 is default. Divide this by number of cameras to get the number to use-->
             <Feature Name="StreamFrameRateConstrain" Value="1" Type="Bool" />
             <Feature Name="StreamHoldCapacity" Value="99" Type="Int" />
             <Feature Name="StreamHoldEnable" Value="Off" Type="Enum" />
